@@ -5,7 +5,7 @@ import { Monster } from './Monster';
 import { AbstractScene } from '../scenes/AbstractScene';
 import { ASSETS } from '../constants/assets';
 
-const HIT_DELAY = 500;
+const HIT_DELAY = 2000;
 const PLAYER_SPEED = 32;
 const PLAYER_RELOAD = 1000;
 
@@ -107,6 +107,10 @@ export class Player extends Character {
     }
 
     this.handleShootKey(keyPressed);
+
+    if (this.alpha < 1.0 && this.canGetHit()) {
+      this.alpha = 1.0;
+    }
   }
 
   public canGetHit() {
@@ -117,6 +121,7 @@ export class Player extends Character {
     this.hp--;
 
     this.lastTimeHit = new Date().getTime();
+    this.alpha = 0.5;
 
     if (this.hp > 0) {
       return;
