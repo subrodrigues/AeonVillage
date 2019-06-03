@@ -4,7 +4,8 @@ import { SCENES } from '../constants/scenes';
 import { EVENTS } from '../constants/events';
 import { GameManager } from './GameManager';
 
-const DISTANCE_BETWEEN_HEARTS = 15;
+const DISTANCE_BETWEEN_HEARTS = 9;
+const HEARTS_MARGIN = 6;
 
 export class HUD extends Phaser.Scene {
   private hearts: Phaser.GameObjects.Sprite[];
@@ -33,8 +34,8 @@ export class HUD extends Phaser.Scene {
       .map((_, i) => {
         return this.add
           .sprite(
-            (i + 1) * DISTANCE_BETWEEN_HEARTS,
-            DISTANCE_BETWEEN_HEARTS,
+            (i + 1) * DISTANCE_BETWEEN_HEARTS + HEARTS_MARGIN,
+            DISTANCE_BETWEEN_HEARTS + HEARTS_MARGIN,
             ASSETS.IMAGES.HEART_EMPTY,
           )
           .setScrollFactor(0)
@@ -45,7 +46,9 @@ export class HUD extends Phaser.Scene {
       .fill(0)
       .map((_, i) => {
         return this.add
-          .sprite((i + 1) * DISTANCE_BETWEEN_HEARTS, DISTANCE_BETWEEN_HEARTS, ASSETS.IMAGES.HEART)
+          .sprite((i + 1) * DISTANCE_BETWEEN_HEARTS + HEARTS_MARGIN,
+            DISTANCE_BETWEEN_HEARTS + HEARTS_MARGIN,
+            ASSETS.IMAGES.HEART)
           .setScrollFactor(0)
           .setDepth(100);
       });
