@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "./built",
+    "allowJs": true,
+    "target": "ES6",
+    "lib": ["es2017", "dom"],
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "noImplicitAny": false
+  },
+  "jest": {
+    "globals": {
+      "require": true
+    }
+  },
+  "files": ["typings/typings.d.ts", "typings/phaser.d.ts"],
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "bin"]
+}
