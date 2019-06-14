@@ -4,8 +4,8 @@ import { SCENES } from '../constants/scenes';
 import { EVENTS } from '../constants/events';
 import { GameManager } from './GameManager';
 
-const DISTANCE_BETWEEN_HEARTS = 9;
-const HEARTS_MARGIN = 6;
+const DISTANCE_BETWEEN_HEARTS = 36;
+const HEARTS_MARGIN = 24;
 
 export class HUD extends Phaser.Scene {
   private hearts: Phaser.GameObjects.Sprite[];
