@@ -6,7 +6,7 @@ import { AbstractScene } from '../scenes/AbstractScene';
 import { ASSETS } from '../constants/assets';
 
 const HIT_DELAY = 2000;
-const PLAYER_SPEED = 32;
+const PLAYER_SPEED = 16;
 const PLAYER_RELOAD = 1000;
 
 export class Player extends Character {
@@ -175,6 +175,7 @@ export class Player extends Character {
         break;
     }
 
+    // Normalize and scale the velocity so that player can't move faster along a diagonal
     this.body.velocity.normalize().scale(PLAYER_SPEED);
 
     if (!shouldAnimate) {

@@ -19,6 +19,8 @@ export abstract class Monster extends Character {
   private isWandering: boolean = false;
   private isStartled: boolean = false;
 
+  private isPacifier: boolean = false; // To be used by originaly pacific creatures
+
   public updateMonster() {
     if (!this.active) {
       return;
@@ -64,6 +66,12 @@ export abstract class Monster extends Character {
   }
 
   private shouldChase = () => {
+
+    // While a pacifier monster is not startled, it will not attack
+    if (this.isPacifier && !this.isStartled) {
+      return;
+    }
+
     const playerPoint = this.scene.player.getCenter();
     const monsterPoint = this.getCenter();
     const distance = monsterPoint.distance(playerPoint);
@@ -110,6 +118,8 @@ export abstract class Monster extends Character {
 
     this.setVelocityX(Math.sign(x) * this.MONSTER_SPEED);
     this.setVelocityY(Math.sign(y) * this.MONSTER_SPEED);
+
+    this.body.velocity.normalize().scale(this.MONSTER_SPEED);
 
     const orientation = this.getOrientationFromTargettedPosition(x, y);
 
@@ -199,5 +209,9 @@ export abstract class Monster extends Character {
     const y = randomBetweenMinusOneAndOne();
 
     return { x, y };
+  }
+
+  public setIsPacifier(condition: boolean ){
+    this.isPacifier = condition;
   }
 }
