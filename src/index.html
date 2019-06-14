@@ -7,76 +7,10 @@
     <meta charset="UTF-8">
     <title><%= htmlWebpackPlugin.options.title %></title>
 
-<!--    <style>-->
-<!--      body {-->
-<!--        overflow: hidden;-->
-<!--        background-color: black;-->
-<!--        width: 100%;-->
-<!--        height: 100%;-->
-<!--        margin: 0;-->
-<!--        padding: 0;-->
-<!--      }-->
-
-<!--      #game-container {-->
-<!--        margin: 0 auto;-->
-<!--        display: flex;-->
-<!--        flex-direction: column;-->
-<!--        justify-content: center;-->
-<!--      }-->
-
-<!--      canvas {-->
-<!--        width: 100%;-->
-<!--        height: 100%;-->
-<!--      }﻿-->
-<!--    </style>-->
-
-<!--    <script>-->
-<!--      System.config({-->
-<!--        packages: {'app': {defaultExtension: 'js'}}-->
-<!--      });-->
-<!--      System.import('app/app');-->
-<!--    </script>-->
-
   </head>
 <!--  <body style="margin: 0; overflow: hidden">-->
-  <body style="margin: 0px;     background-color: black;
-">
-    <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
+  <body style="margin: 0px;     background-color: black;">
       <div id="game-container"/>
-    </div>
-
-
-<!--    <script>-->
-<!--      function resizeApp()-->
-<!--      {-->
-<!--        // Width-height-ratio of game resolution-->
-<!--        let game_ratio = 250 / 400;-->
-
-<!--        // Make div full height of browser and keep the ratio of game resolution-->
-<!--        let div = document.getElementById('game-container');-->
-<!--        div.style.width = (window.innerHeight * game_ratio) + 'px';-->
-<!--        div.style.height = window.innerHeight + 'px';-->
-
-<!--        // Check if device DPI messes up the width-height-ratio-->
-<!--        let canvas = document.getElementsByTagName('canvas')[0];-->
-
-<!--        let dpi_w = (parseInt(div.style.width) / canvas.width);-->
-<!--        let dpi_h = (parseInt(div.style.height) / canvas.height);-->
-
-<!--        let height = window.innerHeight * (dpi_w / dpi_h);-->
-<!--        let width = height * 0.625;-->
-
-<!--        canvas.style.width = width + 'px';-->
-<!--        canvas.style.height = height + 'px';-->
-<!--      }-->
-
-<!--      // Add to resize event-->
-<!--      window.addEventListener('resize', resizeApp);-->
-
-<!--      // Set correct size when page loads the first time-->
-<!--      resizeApp();﻿-->
-<!--    </script>-->
-
   </body>
 
 </html>

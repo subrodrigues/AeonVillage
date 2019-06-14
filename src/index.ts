@@ -10,10 +10,15 @@ class PhaserGame extends Phaser.Game {
     const config = {
       type: Phaser.AUTO,
       parent: 'game-container',
-      width: 272,
-      height: 192,
+      width: 1088,
+      height: 768,
       pixelArt: true,
       roundPixels: true,
+      fps: {
+        target: 60,
+        min: 30,
+        forceSetTimeOut: true
+      },
       scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,

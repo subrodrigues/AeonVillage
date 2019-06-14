@@ -24,7 +24,6 @@
     "valid-jsdoc": [true],
     "valid-typeof": [true],
     "no-control-regex": [true],
-    "no-trailing-whitespace": [false],
     "no-empty": [false]
   },
   "rulesDirectory": []

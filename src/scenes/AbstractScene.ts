@@ -9,7 +9,6 @@ import { ASSETS } from '../constants/assets';
 import { MONSTERS } from '../constants/monsters';
 // declare var TUDelft: any;
 
-const CAMERA_LERP = 1;
 const PLAYER_INITIAL_POSITION = {
   x: 368,
   y: 416,
@@ -232,10 +231,9 @@ export abstract class AbstractScene extends Phaser.Scene {
   }
 
   private initCamera() {
-    this.cameras.main.setRoundPixels(true);
+    this.cameras.main.startFollow(this.player);
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-    this.cameras.main.startFollow(this.player, true, CAMERA_LERP, CAMERA_LERP);
-
+    this.cameras.main.setZoom(4);
   }
 
 }
