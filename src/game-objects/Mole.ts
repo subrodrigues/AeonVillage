@@ -20,6 +20,8 @@ export class Mole extends Monster {
     this.setDepth(5);
     this.setCollideWorldBounds(true);
     this.setImmovable(true);
+
+    this.setSize(16, 20);
   }
 
   protected animateAttack() {

@@ -7,7 +7,6 @@ export class Preloader extends Phaser.Scene {
   protected preload() {
     this.loadAssets();
     this.loadSoundAssets();
-
   }
 
   protected create() {
@@ -133,42 +132,42 @@ export class Preloader extends Phaser.Scene {
     this.load.spritesheet(
       ASSETS.IMAGES.TREANT_IDLE_DOWN,
       'assets/spritesheets/treant/idle/treant-idle-front.png',
-      { frameWidth: 31, frameHeight: 35 },
+      { frameWidth: 34, frameHeight: 34 },
     );
     this.load.spritesheet(
       ASSETS.IMAGES.TREANT_WALK_SIDE,
       'assets/spritesheets/treant/walk/treant-walk-side.png',
-      { frameWidth: 31, frameHeight: 35 },
+      { frameWidth: 34, frameHeight: 34 },
     );
     this.load.spritesheet(
       ASSETS.IMAGES.TREANT_WALK_UP,
       'assets/spritesheets/treant/walk/treant-walk-back.png',
-      { frameWidth: 31, frameHeight: 35 },
+      { frameWidth: 34, frameHeight: 34 },
     );
     this.load.spritesheet(
       ASSETS.IMAGES.TREANT_WALK_DOWN,
       'assets/spritesheets/treant/walk/treant-walk-front.png',
-      { frameWidth: 31, frameHeight: 35 },
+      { frameWidth: 34, frameHeight: 34 },
     );
     this.load.spritesheet(
       ASSETS.IMAGES.MOLE_IDLE_DOWN,
       'assets/spritesheets/mole/idle/mole-idle-front.png',
-      { frameWidth: 24, frameHeight: 24 },
+      { frameWidth: 32, frameHeight: 32 },
     );
     this.load.spritesheet(
       ASSETS.IMAGES.MOLE_WALK_SIDE,
       'assets/spritesheets/mole/walk/mole-walk-side.png',
-      { frameWidth: 24, frameHeight: 24 },
+      { frameWidth: 32, frameHeight: 32 },
     );
     this.load.spritesheet(
       ASSETS.IMAGES.MOLE_WALK_UP,
       'assets/spritesheets/mole/walk/mole-walk-back.png',
-      { frameWidth: 24, frameHeight: 24 },
+      { frameWidth: 32, frameHeight: 32 },
     );
     this.load.spritesheet(
       ASSETS.IMAGES.MOLE_WALK_DOWN,
       'assets/spritesheets/mole/walk/mole-walk-front.png',
-      { frameWidth: 24, frameHeight: 24 },
+      { frameWidth: 32, frameHeight: 32 },
     );
     this.load.spritesheet(ASSETS.IMAGES.PLAYER, 'assets/player.png', {
       frameWidth: 16,

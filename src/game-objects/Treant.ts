@@ -21,6 +21,8 @@ export class Treant extends Monster {
     this.setDepth(5);
     this.setCollideWorldBounds(true);
     this.setImmovable(true);
+
+    this.setSize(22, 28);
   }
 
   protected animateAttack() {
