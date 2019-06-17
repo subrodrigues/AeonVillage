@@ -257,7 +257,7 @@ export class Preloader extends Phaser.Scene {
         end: 2,
       }),
       frameRate: 7,
-      repeat: -1,
+      repeat: 0,
     });
     this.anims.create({
       key: ASSETS.ANIMATIONS.PLAYER_ATTACK_WEAPON_UP,
@@ -266,7 +266,7 @@ export class Preloader extends Phaser.Scene {
         end: 2,
       }),
       frameRate: 7,
-      repeat: -1,
+      repeat: 0,
     });
     this.anims.create({
       key: ASSETS.ANIMATIONS.PLAYER_ATTACK_WEAPON_SIDE,
@@ -275,7 +275,7 @@ export class Preloader extends Phaser.Scene {
         end: 2,
       }),
       frameRate: 7,
-      repeat: -1,
+      repeat: 0,
     });
     this.anims.create({
       key: ASSETS.ANIMATIONS.TREANT_IDLE_DOWN,

@@ -22,6 +22,7 @@ export abstract class Character extends Phaser.Physics.Arcade.Sprite {
 
     const uiScene: any = this.scene.scene.get(SCENES.GAME_MANAGER);
     this.uiScene = uiScene;
+
   }
 
   protected animate(
@@ -32,4 +33,5 @@ export abstract class Character extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(flip);
     this.play(anim, true);
   }
+
 }

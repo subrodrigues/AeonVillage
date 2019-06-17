@@ -7,7 +7,6 @@ import { ASSETS } from '../constants/assets';
 
 const HIT_DELAY = 2000;
 const PLAYER_SPEED = 16;
-const PLAYER_RELOAD = 1000;
 
 export class Player extends Character {
   public static MAX_HP = 3;
@@ -43,11 +42,10 @@ export class Player extends Character {
 
   private orientation: Orientation;
   private lastTimeHit: number;
-  private isLoading: boolean;
-  private isShooting: boolean;
   private tomb: Phaser.GameObjects.Sprite;
-  private attackFlag: number;
 
+  private isShooting: boolean;
+  private attackAnimationIsConcluded: boolean;
   private isShotKeyPressed: boolean;
 
   constructor(scene: AbstractScene, x: number, y: number) {
@@ -64,30 +62,41 @@ export class Player extends Character {
     this.setOffset(10, 16);
     this.setDepth(10);
 
-    this.isLoading = false;
     this.isShooting = false;
     this.tomb = null;
-    this.attackFlag = 0;
 
+    this.attackAnimationIsConcluded = false;
     this.isShotKeyPressed = false;
 
-    this.on('animationrepeat', event => {
-      switch (event.key) {
-        case Player.SHOOT_ANIMATION.left.anim:
-        case Player.SHOOT_ANIMATION.right.anim:
-        case Player.SHOOT_ANIMATION.up.anim:
-        case Player.SHOOT_ANIMATION.down.anim:
-          this.concludeShoot();
-          break;
-        default:
-          break;
-      }
-    }, this);
+    this.on('animationcomplete', this.onAnimationComplete, this);
+
+
+
+
+
+    // GAMYGDALA
     //
     //
     // this.emotionAgent = AbstractScene.emotionEngine.createAgent('player');
     // AbstractScene.emotionEngine.createGoalForAgent('player','survive', 1);
     // AbstractScene.emotionEngine.createGoalForAgent('player','win', 0.7);
+  }
+
+  private onAnimationComplete(animation, frame) {
+      switch (animation.key) {
+        // Deal with Bow Attack
+        case Player.SHOOT_ANIMATION.left.anim:
+        case Player.SHOOT_ANIMATION.right.anim:
+        case Player.SHOOT_ANIMATION.up.anim:
+        case Player.SHOOT_ANIMATION.down.anim:
+          if (frame.index === animation.frames.length) {
+            this.attackAnimationIsConcluded = true;
+          }
+
+          break;
+        default:
+          break;
+      }
   }
 
   public updatePlayer(keyPressed) {
@@ -106,7 +115,7 @@ export class Player extends Character {
       this.beIdle();
     }
 
-    this.handleShootKey(keyPressed);
+    this.handleBowAttackKey(keyPressed);
 
     if (this.alpha < 1.0 && this.canGetHit()) {
       this.alpha = 1.0;
@@ -142,19 +151,6 @@ export class Player extends Character {
 
   private set hp(newHp: number) {
     this.uiScene.playerHp = newHp;
-  }
-
-  private reload() {
-    this.isLoading = true;
-    this.scene.time.addEvent({
-      delay: PLAYER_RELOAD,
-      callback: this.readyToFire,
-      callbackScope: this,
-    });
-  }
-
-  private readyToFire() {
-    this.isLoading = false;
   }
 
   private go(direction: Orientation, shouldAnimate = true) {
@@ -225,33 +221,42 @@ export class Player extends Character {
     this.animate(Player.IDLE_ANIMATION, this.orientation);
   }
 
-  private concludeShoot = () => {
+  private concludeShot() {
     this.isShooting = false;
-    const arrow = new Arrow(this.scene, this, this.orientation);
-    this.scene.physics.add.collider(arrow, this.scene.monsterGroup, (a: Arrow, m: Monster) => {
-      m.loseHp(a);
-    });
+
+    if (this.attackAnimationIsConcluded) {
+      this.attackAnimationIsConcluded = false;
+      this.releaseAttack();
+    }
   }
 
-  private shoot() {
-    this.scene.sound.play('slash');
-
+  private prepareBow() {
     this.isShooting = true;
 
     this.animate(Player.SHOOT_ANIMATION, this.orientation);
     // Arrow will be spawned at the end of the animation
   }
 
-  private handleShootKey(keyPressed) {
-    if (keyPressed.space && !this.isShotKeyPressed) {
+  private handleBowAttackKey(keyPressed) {
+    if (keyPressed.space) {
       this.isShotKeyPressed = true;
-      if (this.isLoading) {
-        return;
+      
+      if (!this.isShooting) {
+        this.prepareBow();
       }
-      this.reload();
-      this.shoot();
-    } else {
-        this.isShotKeyPressed = false;
+
+    } else if (this.isShotKeyPressed) {
+      this.isShotKeyPressed = false;
+      this.concludeShot();
     }
+  }
+
+  private releaseAttack() {
+    this.scene.sound.play('slash');
+
+    const arrow = new Arrow(this.scene, this, this.orientation);
+    this.scene.physics.add.collider(arrow, this.scene.monsterGroup, (a: Arrow, m: Monster) => {
+      m.loseHp(a);
+    });
   }
 }
