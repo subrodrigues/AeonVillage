@@ -12,14 +12,25 @@ export abstract class Monster extends Character {
   protected abstract MONSTER_IDLE_DOWN;
   protected MONSTER_SPEED = 20;
   protected MONSTER_HIT_DELAY = 100;
-  protected CHASING_DISTANCE = 100;
+  protected CHASING_DISTANCE = 40;
 
   protected hp: number;
+  private moveBehavior: integer; // 0: Moves Horizontally - 1: Moves Vertically - 2: Moves Randomly
   private chasingPlayerTimerEvent: Phaser.Time.TimerEvent;
   private isWandering: boolean = false;
   private isStartled: boolean = false;
 
   private isPacifier: boolean = false; // To be used by originaly pacific creatures
+
+  private fixedDirection = {x: 1, y: 1};
+
+  protected constructor(scene, x: number = 400, y: number = 400, moveBehavior: integer = 0, sprite: string) {
+    super(scene, x, y, sprite);
+    this.moveBehavior = moveBehavior;
+
+    this.body.bounce.x = 0.01;
+    this.body.bounce.y = 0.01;
+  }
 
   public updateMonster() {
     if (!this.active) {
@@ -122,7 +133,6 @@ export abstract class Monster extends Character {
     this.body.velocity.normalize().scale(this.MONSTER_SPEED);
 
     const orientation = this.getOrientationFromTargettedPosition(x, y);
-
     this.animate(this.WALK_ANIMATION, orientation);
   }
 
@@ -179,8 +189,8 @@ export abstract class Monster extends Character {
 
     this.isWandering = true;
 
-    const direction = this.getRandomDirection();
-    this.run(direction.x, direction.y);
+    this.updateMonsterDirection();
+    this.run(this.fixedDirection.x, this.fixedDirection.y);
 
     this.scene.time.addEvent({
       delay: Monster.WANDER_LENGTH(),
@@ -203,6 +213,26 @@ export abstract class Monster extends Character {
     });
   }
 
+  /**
+   * Method that updates the monster direction based on its behavior.
+   */
+  private updateMonsterDirection() {
+    switch (this.moveBehavior) {
+      case 0: // horizontal movement
+        this.fixedDirection.x *= -1;
+        this.fixedDirection.y = 0;
+        break;
+      case 1: // vertical movement
+        this.fixedDirection.y *= -1;
+        this.fixedDirection.x = 0;
+        break;
+      default:
+        this.fixedDirection = this.getRandomDirection();
+        break;
+    }
+  }
+
+// @ts-ignore
   private getRandomDirection() {
     const randomBetweenMinusOneAndOne = () => Math.round(2 * Math.random()) - 1;
     const x = randomBetweenMinusOneAndOne();

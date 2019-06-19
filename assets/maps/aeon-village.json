@@ -50,7 +50,7 @@
                         }],
                  "rotation":0,
                  "type":"npc",
-                 "visible":true,
+                 "visible":false,
                  "width":16,
                  "x":560,
                  "y":80
@@ -184,6 +184,12 @@
                  "height":16,
                  "id":30,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"moveBehavior",
+                         "type":"int",
+                         "value":1
+                        }],
                  "rotation":0,
                  "type":"evil-mole",
                  "visible":true,
@@ -196,6 +202,12 @@
                  "height":16,
                  "id":31,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"moveBehavior",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"protector-treant",
                  "visible":true,

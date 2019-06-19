@@ -14,6 +14,16 @@ const PLAYER_INITIAL_POSITION = {
   y: 416,
 };
 
+const musicConfig = {
+  mute: false,
+  volume: 0.7,
+  rate: 1,
+  detune: 0,
+  seek: 0,
+  loop: true,
+  delay: 0
+};
+
 interface InterSceneData {
   comesFrom: string;
 }
@@ -95,9 +105,9 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.monsters = monsters.map((monster: any): Monster => {
       switch (monster.type) {
         case MONSTERS.evil_mole:
-          return new Treant(this, monster.x, monster.y);
+          return new Mole(this, monster.x, monster.y, monster.properties[0].value);
         case MONSTERS.protector_treant:
-          return new Mole(this, monster.x, monster.y);
+          return new Treant(this, monster.x, monster.y, monster.properties[0].value);
         default:
       }
     });
@@ -133,7 +143,7 @@ export abstract class AbstractScene extends Phaser.Scene {
     // AbstractScene.emotionEngine.setGain(20);
     // AbstractScene.emotionEngine.debug=true;
 
-    this.sound.play('music');
+    this.sound.play('music', musicConfig);
 
   }
 

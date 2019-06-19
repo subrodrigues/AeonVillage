@@ -111,7 +111,7 @@ export class Player extends Character {
     }
 
     const noKeyPressed = Object.values(keyPressed).filter(x => x).length === 0;
-    if (noKeyPressed && !this.isLoading) {
+    if (noKeyPressed) {
       this.beIdle();
     }
 
