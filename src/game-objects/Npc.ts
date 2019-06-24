@@ -14,6 +14,7 @@ export class Npc extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this);
 
     this.setDepth(5);
+    this.setSize(12, 12);
     this.textGameObject = this.scene.add.text(0, 0, text, { align: 'center', fontSize: '10px' });
     this.textGameObject.setWordWrapWidth(150);
     this.textGameObject.setPosition(
