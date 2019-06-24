@@ -4,6 +4,7 @@ export const MAP_CONTENT_KEYS = {
     DECORATION: 'top',
     DECORATION_TOP: 'top-overlay',
     DECORATION_EXTRA: 'top-overlay2',
+    WORLD_OBJECTS_LOWER: 'world-objects-lower',
     WORLD_OBJECTS: 'world-objects',
     COLLISION_LAYER: 'collisions',
   },

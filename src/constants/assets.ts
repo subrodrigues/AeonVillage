@@ -6,7 +6,7 @@ export const ASSETS = {
     LOGO: 'logo',
     TILES: 'tiles',
     OBJECT_TILES: 'object-tiles',
-    TILE_OBJECTS: 'tile-objects',
+    TILE_COLLIDER_OBJECTS: 'tile-collider-objects',
     ARROW: 'arrow',
     TREANT_ATTACK: 'treantAttack',
     HEART: 'heart',

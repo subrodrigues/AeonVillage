@@ -42,6 +42,7 @@ export abstract class AbstractScene extends Phaser.Scene {
     deco: Phaser.Tilemaps.StaticTilemapLayer;
     deco_top: Phaser.Tilemaps.StaticTilemapLayer;
     deco_extra: Phaser.Tilemaps.StaticTilemapLayer;
+    world_objects_lower: Phaser.Tilemaps.StaticTilemapLayer;
     world_objects: Phaser.Tilemaps.StaticTilemapLayer;
     collisions: Phaser.Tilemaps.StaticTilemapLayer;
   };
@@ -151,19 +152,20 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.map = this.make.tilemap({ key: this.mapKey });
     const tileset = this.map.addTilesetImage(ASSETS.TILESET, ASSETS.IMAGES.TILES, 16, 16, 0, 0);
     const objsTileset = this.map.addTilesetImage(ASSETS.OBJECTS_TILESET, ASSETS.IMAGES.OBJECT_TILES, 16, 16, 0, 0);
-    const tileObjs = this.map.addTilesetImage(ASSETS.TILE_OBJECTS, ASSETS.IMAGES.TILE_OBJECTS, 16, 16, 16, 0);
+    const tileObjs = this.map.addTilesetImage(ASSETS.TILE_OBJECTS, ASSETS.IMAGES.TILE_COLLIDER_OBJECTS, 16, 16, 16, 0);
 
     this.layers = {
       background: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.BACKGROUND, tileset, 0, 0),
       deco: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.DECORATION, tileset, 0, 0),
       deco_top: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.DECORATION_TOP, tileset, 0, 0),
       deco_extra: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.DECORATION_EXTRA, tileset, 0, 0),
+      world_objects_lower: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.WORLD_OBJECTS_LOWER, objsTileset, 0, 0),
       world_objects: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.WORLD_OBJECTS, objsTileset, 0, 0),
       collisions: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.COLLISION_LAYER, tileObjs, 0, 0),
     };
 
     this.layers.collisions.setCollisionByProperty({ collides: true });
-    // this.layers.world_objects.setDepth(20);
+    this.layers.world_objects.setDepth(20);
 
     const debugGraphics = this.add.graphics().setAlpha(0.75);
     this.layers.collisions.renderDebug(debugGraphics, {
