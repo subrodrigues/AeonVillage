@@ -1,10 +1,12 @@
 export const ASSETS = {
   TILESET: 'tileset',
   OBJECTS_TILESET: 'world-objects',
+  TILE_OBJECTS: 'tile-objects',
   IMAGES: {
     LOGO: 'logo',
     TILES: 'tiles',
     OBJECT_TILES: 'object-tiles',
+    TILE_OBJECTS: 'tile-objects',
     ARROW: 'arrow',
     TREANT_ATTACK: 'treantAttack',
     HEART: 'heart',

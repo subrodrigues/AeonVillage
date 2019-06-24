@@ -151,6 +151,7 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.map = this.make.tilemap({ key: this.mapKey });
     const tileset = this.map.addTilesetImage(ASSETS.TILESET, ASSETS.IMAGES.TILES, 16, 16, 0, 0);
     const objsTileset = this.map.addTilesetImage(ASSETS.OBJECTS_TILESET, ASSETS.IMAGES.OBJECT_TILES, 16, 16, 0, 0);
+    const tileObjs = this.map.addTilesetImage(ASSETS.TILE_OBJECTS, ASSETS.IMAGES.TILE_OBJECTS, 16, 16, 16, 0);
 
     this.layers = {
       background: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.BACKGROUND, tileset, 0, 0),
@@ -158,38 +159,30 @@ export abstract class AbstractScene extends Phaser.Scene {
       deco_top: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.DECORATION_TOP, tileset, 0, 0),
       deco_extra: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.DECORATION_EXTRA, tileset, 0, 0),
       world_objects: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.WORLD_OBJECTS, objsTileset, 0, 0),
-      collisions: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.COLLISION_LAYER, tileset, 0, 0),
+      collisions: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.COLLISION_LAYER, tileObjs, 0, 0),
     };
-    // this.layers.collisions.setCollisionByProperty({ collides: true });
 
-    // this.layers.collisions.setCollisionBetween(0, 59);
-    this.layers.deco.setCollisionByProperty({ collides: true });
-    // this.layers.deco.setCollisionBetween(0, 59);
+    this.layers.collisions.setCollisionByProperty({ collides: true });
+    // this.layers.world_objects.setDepth(20);
 
     const debugGraphics = this.add.graphics().setAlpha(0.75);
-    this.layers.deco.renderDebug(debugGraphics, {
+    this.layers.collisions.renderDebug(debugGraphics, {
       tileColor: null, // Color of non-colliding tiles
       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
       faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
     });
+
   }
 
   private addColliders() {
-    this.physics.add.collider(this.player, this.layers.deco);
-    this.physics.add.collider(this.player, this.layers.deco_top);
-    this.physics.add.collider(this.player, this.layers.deco_extra);
-    this.physics.add.collider(this.player, this.layers.world_objects);
-
+    this.physics.add.collider(this.player, this.layers.collisions);
 
     this.monsterGroup = this.physics.add.group(this.monsters.map(monster => monster));
     this.physics.add.collider(this.monsterGroup, this.layers.collisions);
-    // this.physics.add.collider(this.monsterGroup, this.layers.deco);
     this.physics.add.overlap(this.monsterGroup, this.player, (_: Player, m: Monster) => {
       m.attack();
     });
 
-    // this.physics.add.collider(this.player, this.layers.collisions);
-    // this.physics.add.collider(this.player, this.layers.deco);
     this.npcs.map((npc: Npc) =>
       this.physics.add.collider(npc, this.player, npc.talk),
     );
