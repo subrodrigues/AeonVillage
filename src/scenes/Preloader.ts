@@ -33,7 +33,7 @@ export class Preloader extends Phaser.Scene {
 
     // Images
     this.load.image(ASSETS.IMAGES.LOGO, 'assets/logo.png');
-    this.load.image(ASSETS.IMAGES.TILES, 'assets/maps/assets/tileset-extruded.png');
+    this.load.image(ASSETS.IMAGES.TILES, 'assets/maps/assets/tileset-extrud.png');
     this.load.image(ASSETS.IMAGES.OBJECT_TILES, 'assets/maps/assets/world-objects.png');
     this.load.image(ASSETS.IMAGES.TILE_COLLIDER_OBJECTS, 'assets/maps/assets/tile-objects.png');
     this.load.image(ASSETS.IMAGES.ARROW, 'assets/sprites/misc/arrow.png');
