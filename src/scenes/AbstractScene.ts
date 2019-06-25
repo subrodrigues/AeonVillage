@@ -97,7 +97,7 @@ export abstract class AbstractScene extends Phaser.Scene {
     const npcsMapObjects = this.map.objects.find(o => o.name === MAP_CONTENT_KEYS.objects.NPCS);
     const npcs: any = npcsMapObjects ? npcsMapObjects.objects : [];
     this.npcs = npcs.map(npc => {
-      return new Npc(this, npc.x, npc.y, npc.properties.message);
+      return new Npc(this, npc.x, npc.y, npc.properties[0].value);
     });
 
     const monstersMapObjects = this.map.objects.find(o => o.name === MAP_CONTENT_KEYS.objects.MONSTERS);

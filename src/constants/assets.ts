@@ -36,6 +36,7 @@ export const ASSETS = {
     MOLE_WALK_UP: 'mole-walk-up',
     MOLE_WALK_DOWN: 'mole-walk-down',
     MONSTER_DEATH: 'monster-death',
+    DIALOG_WINDOW: "dialog-window"
   },
   ANIMATIONS: {
     PLAYER_MOVE_LEFT: 'player-move-left',

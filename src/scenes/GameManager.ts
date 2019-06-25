@@ -16,6 +16,10 @@ export class GameManager extends Phaser.Scene {
     this.events.emit(EVENTS.UPDATE_HP);
   }
 
+  public showDialogueMessage(message: string) {
+    this.events.emit(EVENTS.SHOW_DIALOGUE_MESSAGE, message);
+  }
+
   protected create() {
     this.scene.launch(SCENES.HUD);
   }
