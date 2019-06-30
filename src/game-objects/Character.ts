@@ -83,7 +83,7 @@ export abstract class Character extends Phaser.Physics.Arcade.Sprite {
       this.strongestEmotion = strongestEmotion;
 
       var color = GameUtils.getEmotionColor(this.strongestEmotion.name);
-      console.log('EMOTION :' + this.strongestEmotion.name + ' ' + this.strongestEmotion.intensity + " color: " + color);
+      // console.log('EMOTION :' + this.strongestEmotion.name + ' ' + this.strongestEmotion.intensity + " color: " + color);
 
       this.uiEmotionName.setColor(color);
       this.uiEmotionName.setShadow(5, 5, 'rgba(0,0,0,0.8)', 10);

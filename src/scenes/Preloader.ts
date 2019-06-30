@@ -14,10 +14,7 @@ export class Preloader extends Phaser.Scene {
   protected create() {
 
     this.createAnimations();
-    this.scene.launch(SCENES.FIRST_LEVEL);
-    this.scene.launch(SCENES.GAME_MANAGER);
-
-    // this.input.on('pointerdown', () => this.loadSoundAssets());
+    this.scene.launch(SCENES.TITLE_SCREEN);
   }
 
   private loadSoundAssets() {
@@ -46,6 +43,15 @@ export class Preloader extends Phaser.Scene {
     this.load.image(ASSETS.IMAGES.DIALOG_WINDOW, 'assets/dialogue_window.png');
     this.load.image(ASSETS.IMAGES.EMOTION_HOPE_WINDOW, 'assets/emotions/emotion-hope-window.png');
     this.load.image(ASSETS.IMAGES.EMOTION_HOPE_BAR, 'assets/emotions/emotion-bar.png');
+
+    // Title Screen Images
+    this.load.image(ASSETS.MENU.TITLE_SCREEN_CREDITS, 'assets/menu/credits-text.png');
+    this.load.image(ASSETS.MENU.TITLE_SCREEN_GAME_OVER, 'assets/menu/game-over.png');
+    this.load.image(ASSETS.MENU.TITLE_SCREEN_INSTRUCTIONS, 'assets/menu/instructions.png');
+    this.load.image(ASSETS.MENU.TITLE_SCREEN_BACKGROUND, 'assets/menu/title-screen-bg.png');
+    this.load.image(ASSETS.MENU.TITLE_SCREEN_LOGO, 'assets/menu/title-screen-logo.png');
+    this.load.image(ASSETS.MENU.TITLE_SCREEN_BLINK_ENTER, 'assets/menu/title-screen-press-enter.png');
+
 
     // Spritesheets
     this.load.spritesheet(

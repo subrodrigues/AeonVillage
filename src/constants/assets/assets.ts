@@ -66,5 +66,12 @@ export const ASSETS = {
     MOLE_WALK_DOWN: 'mole-walk-down',
     MONSTER_DEATH: 'monster-death',
   },
-
+  MENU: {
+    TITLE_SCREEN_BACKGROUND: 'title-screen-background',
+    TITLE_SCREEN_LOGO: 'title-screen-logo',
+    TITLE_SCREEN_BLINK_ENTER: 'title-screen-blink-enter',
+    TITLE_SCREEN_CREDITS: 'title-screen-credits',
+    TITLE_SCREEN_INSTRUCTIONS: 'title-screen-instructions',
+    TITLE_SCREEN_GAME_OVER: 'title-screen-game-over'
+  },
 };

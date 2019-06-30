@@ -56,11 +56,11 @@ export abstract class AbstractScene extends Phaser.Scene {
 
   public music: Phaser.Sound.BaseSound;
 
-  // private phaserGame: PhaserGame;
   private emotionEngine: TUDelft.Gamygdala;
   private score = 0;
   private totalEvilMoles = 0;
   private totalProtTreant = 0;
+  private debugKey;
 
   constructor(key: string, mapKey: string) {
     super(key);
@@ -69,7 +69,7 @@ export abstract class AbstractScene extends Phaser.Scene {
     // this.phaserGame = PhaserGame.instance;
     this.emotionEngine = new TUDelft.Gamygdala(); // this simply creates an emotion engine without plugin supports
     this.emotionEngine.debug = true;
-    this.emotionEngine.setGain(20)
+    this.emotionEngine.setGain(20);
     /** Emotional Engine initialization **/
 
     this.mapKey = mapKey;
@@ -84,6 +84,12 @@ export abstract class AbstractScene extends Phaser.Scene {
   }
 
   public update() {
+    if (Phaser.Input.Keyboard.JustDown(this.debugKey)) {
+      this.emotionEngine.debug = !this.emotionEngine.debug;
+      console.log(this.emotionEngine.debug ? '[DEBUG ON] - Emotional log will be shown on console' :
+        '[DEBUG OFF] - No emotional log on console');
+    }
+
     const keyPressed = {
       left: this.cursors.left.isDown,
       right: this.cursors.right.isDown,
@@ -153,8 +159,8 @@ export abstract class AbstractScene extends Phaser.Scene {
           var mole = new Mole(this, MonsterTypes.evil_mole, monster.x, monster.y, monster.properties[0].value);
 
           /** GAMYGDALA Mole initialization **/
-          // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
-          // because when the player gets hit, we need to tell gamygdala who did it.
+            // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
+            // because when the player gets hit, we need to tell gamygdala who did it.
           const agentMoleName = EmotionalEngineAgents.evil_mole + j;
 
           mole.setEmotionalAgent(this.emotionEngine.createAgent(agentMoleName));
@@ -176,8 +182,8 @@ export abstract class AbstractScene extends Phaser.Scene {
           var treant = new Treant(this, MonsterTypes.protector_treant, monster.x, monster.y, monster.properties[0].value);
 
           /** GAMYGDALA Treant initialization **/
-          // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
-          // because when the player gets hit, we need to tell gamygdala who did it.
+            // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
+            // because when the player gets hit, we need to tell gamygdala who did it.
           const agentTreantName = EmotionalEngineAgents.protector_treant + k;
 
           treant.setEmotionalAgent(this.emotionEngine.createAgent(agentTreantName));
@@ -215,8 +221,10 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.sound.play('music', musicConfig);
 
-    this.emotionEngine.appraiseBelief(0.8,'',[EmotionalEngineGoals.village_in_danger],[1]);
-    this.emotionEngine.appraiseBelief(0.2, EmotionalEngineAgents.player,[EmotionalEngineGoals.protect_village],[1]);
+    this.emotionEngine.appraiseBelief(0.8, '', [EmotionalEngineGoals.village_in_danger], [1]);
+    this.emotionEngine.appraiseBelief(0.2, EmotionalEngineAgents.player, [EmotionalEngineGoals.protect_village], [1]);
+
+    this.debugKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
   }
 
   private createMapWithLayers() {
@@ -314,9 +322,9 @@ export abstract class AbstractScene extends Phaser.Scene {
   private initCamera() {
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+
     this.cameras.main.setZoom(4);
   }
-
 
   /**
    * GAMYGDALA METHODS
@@ -335,7 +343,7 @@ export abstract class AbstractScene extends Phaser.Scene {
       //   this.monsters[i].getMonsterType() === MonsterTypes.evil_mole ? -0.1 : 0.1);
     }
 
-    switch(type){
+    switch (type) {
       case MonsterTypes.evil_mole:
         this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.player,
           [EmotionalEngineGoals.player_win],
@@ -344,13 +352,13 @@ export abstract class AbstractScene extends Phaser.Scene {
 
         this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.village,
           [EmotionalEngineGoals.village_in_danger],
-          [- this.score / this.totalEvilMoles],
+          [-this.score / this.totalEvilMoles],
           true);
-      break;
+        break;
       case MonsterTypes.protector_treant:
         this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.player,
           [EmotionalEngineGoals.player_win],
-          [- this.score / this.totalProtTreant],
+          [-this.score / this.totalProtTreant],
           true);
 
         this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.village,
