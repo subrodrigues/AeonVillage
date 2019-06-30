@@ -26,7 +26,6 @@ export class TitleScreen extends Phaser.Scene {
 
   protected create() {
     this.state = 1;
-
     this.initCamera();
 
     this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, ASSETS.MENU.TITLE_SCREEN_BACKGROUND);
@@ -44,11 +43,10 @@ export class TitleScreen extends Phaser.Scene {
     });
     tween.resume();
 
-    //
     this.pressEnter = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2 + 66, ASSETS.MENU.TITLE_SCREEN_BLINK_ENTER);
     this.pressEnter.alpha = 1;
     this.pressEnter.setOrigin(0.5);
-    //
+
     this.time.addEvent({
       delay: 900, // ms
       callback: this.blinkText,
@@ -56,7 +54,6 @@ export class TitleScreen extends Phaser.Scene {
       callbackScope: this,
     });
 
-    //
     this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 + 95, ASSETS.MENU.TITLE_SCREEN_CREDITS);
   }
 
@@ -80,6 +77,12 @@ export class TitleScreen extends Phaser.Scene {
       this.instructions.setOrigin(0.5);
       this.title.destroy();
     } else {
+      this.instructions.destroy();
+      this.pressEnter.destroy();
+      this.enterKey.destroy();
+
+      this.scene.remove(SCENES.TITLE_SCREEN);
+
       this.scene.launch(SCENES.FIRST_LEVEL);
       this.scene.launch(SCENES.GAME_MANAGER);
     }

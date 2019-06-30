@@ -70,6 +70,8 @@ export abstract class Monster extends Character {
   }
 
   protected die() {
+    this.scene.sound.play('enemy-death');
+
     this.scene.monsterKilledByPlayer(this.monsterType);
 
     const deathAnim = this.scene.add

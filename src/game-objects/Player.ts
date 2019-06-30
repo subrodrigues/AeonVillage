@@ -119,6 +119,7 @@ export class Player extends Character {
   }
 
   public loseHp() {
+    this.scene.sound.play('hurt');
     this.hp--;
 
     this.lastTimeHit = new Date().getTime();
@@ -132,7 +133,7 @@ export class Player extends Character {
     if (!this.tomb) {
       this.tomb = this.scene.add
         .sprite(this.x, this.y, ASSETS.IMAGES.TOMB)
-        .setScale(0.1);
+        .setScale(0.9);
     }
     this.destroy();
   }

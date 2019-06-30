@@ -1,7 +1,7 @@
 import { Monster } from './Monster';
 import { ASSETS } from '../constants/assets/assets';
 
-const DESTROY_SPRITE_ATTACK_DELAY = 200;
+// const DESTROY_SPRITE_ATTACK_DELAY = 200;
 
 export class Treant extends Monster {
   protected WALK_ANIMATION = {
@@ -27,16 +27,17 @@ export class Treant extends Monster {
   }
 
   protected animateAttack() {
-    const treantAttack = this.scene.physics.add.sprite(
-      this.scene.player.x,
-      this.scene.player.y,
-      ASSETS.IMAGES.TREANT_ATTACK,
-    );
-    this.scene.time.addEvent({
-      delay: DESTROY_SPRITE_ATTACK_DELAY,
-      callback: () => (treantAttack ? treantAttack.destroy() : null),
-      callbackScope: this,
-    });
+    // TODO
+    // const treantAttack = this.scene.physics.add.sprite(
+    //   this.scene.player.x,
+    //   this.scene.player.y,
+    //   ASSETS.IMAGES.TREANT_ATTACK,
+    // );
+    // this.scene.time.addEvent({
+    //   delay: DESTROY_SPRITE_ATTACK_DELAY,
+    //   callback: () => (treantAttack ? treantAttack.destroy() : null),
+    //   callbackScope: this,
+    // });
   }
 
 }
