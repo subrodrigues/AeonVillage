@@ -11,6 +11,7 @@ export class Npc extends Phaser.Physics.Arcade.Sprite {
 
   public scene: AbstractScene;
   protected uiScene: GameManager;
+  // @ts-ignore
   private readonly joyText: string;
   private readonly standardMessage: string;
 

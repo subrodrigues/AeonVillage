@@ -5,6 +5,8 @@ import { SCENES } from '../constants/service/scenes';
 export class Preloader extends Phaser.Scene {
 
   protected preload() {
+    this.createProgressLoader();
+
     this.loadAssets();
     this.loadSoundAssets();
   }
@@ -342,6 +344,39 @@ export class Preloader extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers(ASSETS.IMAGES.MONSTER_DEATH, { start: 0, end: 6 }),
       frameRate: 15,
       hideOnComplete: true,
+    });
+  }
+
+  /**
+   * Method that creates the initial loading screen.
+   * To be used when loading all the assets.
+   *
+   * NOTE: To be launched on 'preload()' functions.
+   */
+  private createProgressLoader() {
+    const centexX = (1088 / 2) - 160;
+    const centerY = (768 / 2) - 25;
+
+    var progressBar = this.add.graphics();
+    var progressBox = this.add.graphics();
+
+    progressBox.fillStyle(0x8f2a2b, 0.8);
+    progressBox.fillRect(centexX, centerY, 320, 50);
+
+    this.load.on('progress', function(value) {
+      progressBar.clear();
+      progressBar.fillStyle(0xffb900, 1.0);
+      progressBar.fillRect(centexX + 10, centerY + 10, 300 * value, 30);
+    });
+
+    // this.load.on('fileprogress', function(file) {
+    //   console.log(file.src);
+    //
+    // });
+
+    this.load.on('complete', function() {
+      progressBar.destroy();
+      progressBox.destroy();
     });
   }
 }
