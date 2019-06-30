@@ -9,6 +9,7 @@ import { ASSETS } from '../constants/assets/assets';
 import { MonsterTypes } from '../constants/monster-types';
 import { EmotionalEngineAgents, EmotionalEngineGoals } from '../constants/emotional-engine-variables';
 import { GameUtils } from '../utils/GameUtils';
+import { SCENES } from '../constants/service/scenes';
 // import { PhaserGame } from '../index';
 
 declare var TUDelft: any;
@@ -370,4 +371,24 @@ export abstract class AbstractScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * Method to be invoked when the player dies.
+   */
+  requestGameOverScreen() {
+    this.time.addEvent({
+      delay: 900, // ms
+      callback: this.launchGameOverScreen,
+      loop: true,
+      callbackScope: this,
+    });
+  }
+
+  private launchGameOverScreen() {
+    // this.sound.destroy();
+    this.scene.remove(SCENES.HUD);
+    this.scene.remove(SCENES.FIRST_LEVEL);
+    this.scene.remove(SCENES.GAME_MANAGER);
+
+    this.scene.launch(SCENES.GAME_OVER);
+  }
 }

@@ -4,6 +4,7 @@ import { Preloader } from './scenes/Preloader';
 import { GameManager } from './scenes/GameManager';
 import { HUD } from './scenes/HUD';
 import { TitleScreen } from './scenes/TitleScreen';
+import { GameOverScreen } from './scenes/GameOverScreen';
 
 declare var Phaser: any;
 
@@ -34,7 +35,7 @@ export class PhaserGame extends Phaser.Game {
           debug: true,
         },
       },
-      scene: [Preloader, TitleScreen, FirstLevel, SecondLevel, GameManager, HUD],
+      scene: [Preloader, TitleScreen, FirstLevel, SecondLevel, GameManager, HUD, GameOverScreen],
     };
     super(config);
 

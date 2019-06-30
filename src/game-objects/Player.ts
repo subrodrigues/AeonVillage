@@ -135,6 +135,9 @@ export class Player extends Character {
         .sprite(this.x, this.y, ASSETS.IMAGES.TOMB)
         .setScale(0.9);
     }
+
+    this.scene.requestGameOverScreen();
+
     this.destroy();
   }
 
