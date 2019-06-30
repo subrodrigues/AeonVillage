@@ -48,6 +48,7 @@ export abstract class AbstractScene extends Phaser.Scene {
     world_objects_lower: Phaser.Tilemaps.StaticTilemapLayer;
     world_objects: Phaser.Tilemaps.StaticTilemapLayer;
     collisions: Phaser.Tilemaps.StaticTilemapLayer;
+    monster_collisions: Phaser.Tilemaps.StaticTilemapLayer;
   };
 
   public mapKey: string;
@@ -57,6 +58,8 @@ export abstract class AbstractScene extends Phaser.Scene {
   // private phaserGame: PhaserGame;
   private emotionEngine: TUDelft.Gamygdala;
   private score = 0;
+  private totalEvilMoles = 0;
+  private totalProtTreant = 0;
 
   constructor(key: string, mapKey: string) {
     super(key);
@@ -106,13 +109,12 @@ export abstract class AbstractScene extends Phaser.Scene {
     const playerInitialPosition = this.getPlayerInitialPosition(levelChangerObjectLayer, data);
     this.player = new Player(this, playerInitialPosition.x, playerInitialPosition.y);
 
-
     /** GAMYGDALA Player initialization**/
     this.player.setEmotionalAgent(this.emotionEngine.createAgent(EmotionalEngineAgents.player));
     this.emotionEngine.createAgent(EmotionalEngineAgents.village);
 
     this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.player_survive, 1);
-    this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.player_win, 0.8);
+    this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.player_win, 1.0);
     this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.village_in_danger, -1);
     this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.protect_village, 1);
     this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.village, EmotionalEngineGoals.village_in_danger, -1);
@@ -136,6 +138,7 @@ export abstract class AbstractScene extends Phaser.Scene {
       switch (monster.type) {
 
         case MonsterTypes.evil_mole:
+          this.totalEvilMoles += 1;
           var mole = new Mole(this, MonsterTypes.evil_mole, monster.x, monster.y, monster.properties[0].value);
 
           /** GAMYGDALA Mole initialization **/
@@ -157,6 +160,8 @@ export abstract class AbstractScene extends Phaser.Scene {
           /** GAMYGDALA Mole initialization **/
           return mole;
         case MonsterTypes.protector_treant:
+          this.totalProtTreant += 1;
+
           var treant = new Treant(this, MonsterTypes.protector_treant, monster.x, monster.y, monster.properties[0].value);
 
           /** GAMYGDALA Treant initialization **/
@@ -200,7 +205,7 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.sound.play('music', musicConfig);
 
     this.emotionEngine.appraiseBelief(0.8,'',[EmotionalEngineGoals.village_in_danger],[1]);
-    this.emotionEngine.appraiseBelief(0.2,EmotionalEngineAgents.player,[EmotionalEngineGoals.protect_village],[1]);
+    this.emotionEngine.appraiseBelief(0.2, EmotionalEngineAgents.player,[EmotionalEngineGoals.protect_village],[1]);
   }
 
   private createMapWithLayers() {
@@ -217,9 +222,12 @@ export abstract class AbstractScene extends Phaser.Scene {
       world_objects_lower: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.WORLD_OBJECTS_LOWER, objsTileset, 0, 0),
       world_objects: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.WORLD_OBJECTS, objsTileset, 0, 0),
       collisions: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.COLLISION_LAYER, tileObjs, 0, 0),
+      monster_collisions: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.MONSTER_COLLISION_LAYER, tileObjs, 0, 0),
     };
 
     this.layers.collisions.setCollisionByProperty({ collides: true });
+    this.layers.monster_collisions.setCollisionByProperty({ collides: true });
+
     this.layers.world_objects.setDepth(20);
 
     const debugGraphics = this.add.graphics().setAlpha(0.75);
@@ -236,6 +244,8 @@ export abstract class AbstractScene extends Phaser.Scene {
 
     this.monsterGroup = this.physics.add.group(this.monsters.map(monster => monster));
     this.physics.add.collider(this.monsterGroup, this.layers.collisions);
+    this.physics.add.collider(this.monsterGroup, this.layers.monster_collisions);
+
     this.physics.add.overlap(this.monsterGroup, this.player, (_: Player, m: Monster) => {
       m.attack();
     });
@@ -305,15 +315,40 @@ export abstract class AbstractScene extends Phaser.Scene {
 
     for (var i = 0; i < this.monsters.length; i++) {
       if (this.monsters[i].getMonsterType() === type) {
-        this.monsters[i].getEmotionalAgent().getRelation(EmotionalEngineAgents.player).like = -1;
+        this.monsters[i].getEmotionalAgent().getRelation(EmotionalEngineAgents.player).like = -5;
       } else {
-        this.monsters[i].getEmotionalAgent().getRelation(EmotionalEngineAgents.player).like = 1;
+        this.monsters[i].getEmotionalAgent().getRelation(EmotionalEngineAgents.player).like = 5;
       }
-      this.emotionEngine.appraiseBelief(1, this.monsters[i].getEmotionalAgent(),[EmotionalEngineGoals.village_in_danger],
-        this.monsters[i].getMonsterType() === MonsterTypes.evil_mole ? -0.5 : 0.5);
+
+      // this.emotionEngine.appraiseBelief(1, this.monsters[i].getEmotionalAgent(),[EmotionalEngineGoals.village_in_danger],
+      //   this.monsters[i].getMonsterType() === MonsterTypes.evil_mole ? -0.1 : 0.1);
     }
 
-    this.emotionEngine.appraiseBelief(1,EmotionalEngineAgents.player,['win'],[this.score / (this.monsters.length/2)]);
+    switch(type){
+      case MonsterTypes.evil_mole:
+        this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.player,
+          [EmotionalEngineGoals.player_win],
+          [this.score / this.totalEvilMoles],
+          true);
+
+        this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.village,
+          [EmotionalEngineGoals.village_in_danger],
+          [- this.score / this.totalEvilMoles],
+          true);
+      break;
+      case MonsterTypes.protector_treant:
+        this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.player,
+          [EmotionalEngineGoals.player_win],
+          [- this.score / this.totalProtTreant],
+          true);
+
+        this.emotionEngine.appraiseBelief(1, EmotionalEngineAgents.village,
+          [EmotionalEngineGoals.village_in_danger],
+          [this.score / this.totalProtTreant],
+          true);
+        break;
+
+    }
   }
 
 }

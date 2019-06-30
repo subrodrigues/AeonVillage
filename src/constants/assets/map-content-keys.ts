@@ -7,6 +7,7 @@ export const MAP_CONTENT_KEYS = {
     WORLD_OBJECTS_LOWER: 'world-objects-lower',
     WORLD_OBJECTS: 'world-objects',
     COLLISION_LAYER: 'collisions',
+    MONSTER_COLLISION_LAYER: 'monster-collisions',
   },
   objects: {
     NPCS: 'npcs',
