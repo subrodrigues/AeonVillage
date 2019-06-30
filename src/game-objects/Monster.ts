@@ -78,7 +78,7 @@ export abstract class Monster extends Character {
         this.y,
         ASSETS.IMAGES.MONSTER_DEATH,
       );
-    this.destroy();
+    this.destroyInstance();
     deathAnim.play(ASSETS.ANIMATIONS.MONSTER_DEATH, false);
   }
 

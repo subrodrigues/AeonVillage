@@ -36,7 +36,9 @@ export const ASSETS = {
     MOLE_WALK_UP: 'mole-walk-up',
     MOLE_WALK_DOWN: 'mole-walk-down',
     MONSTER_DEATH: 'monster-death',
-    DIALOG_WINDOW: "dialog-window"
+    DIALOG_WINDOW: "dialog-window",
+    EMOTION_HOPE_WINDOW: 'emotion-hope-window',
+    EMOTION_HOPE_BAR: 'emotion-bar',
   },
   ANIMATIONS: {
     PLAYER_MOVE_LEFT: 'player-move-left',
@@ -62,4 +64,5 @@ export const ASSETS = {
     MOLE_WALK_DOWN: 'mole-walk-down',
     MONSTER_DEATH: 'monster-death',
   },
+
 };

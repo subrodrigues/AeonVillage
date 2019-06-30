@@ -92,8 +92,6 @@ export class Player extends Character {
       return;
     }
 
-    this.renderStrongestEmotion();
-
     this.setVelocity(0);
     this.handleMovement(keyPressed);
 
@@ -111,6 +109,9 @@ export class Player extends Character {
     if (this.alpha < 1.0 && this.canGetHit()) {
       this.alpha = 1.0;
     }
+
+    this.renderStrongestEmotion();
+
   }
 
   public canGetHit() {

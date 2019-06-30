@@ -7,6 +7,7 @@ import { Npc } from '../game-objects/Npc';
 import { MAP_CONTENT_KEYS } from '../constants/assets/map-content-keys';
 import { ASSETS } from '../constants/assets/assets';
 import { MonsterTypes } from '../constants/monster-types';
+import { EmotionalEngineAgents, EmotionalEngineGoals } from '../constants/emotional-engine-variables';
 // import { PhaserGame } from '../index';
 
 declare var TUDelft: any;
@@ -62,21 +63,10 @@ export abstract class AbstractScene extends Phaser.Scene {
 
     /** Emotional Engine initialization **/
     // this.phaserGame = PhaserGame.instance;
-    this.emotionEngine = new TUDelft.Gamygdala(); // this simply creates an emotion engine without plugin support.s
+    this.emotionEngine = new TUDelft.Gamygdala(); // this simply creates an emotion engine without plugin supports
     this.emotionEngine.debug = true;
-    this.emotionEngine.setGain(20);
-
+    this.emotionEngine.setGain(20)
     /** Emotional Engine initialization **/
-
-
-    //
-    //  gamygdalaPlugin = new Phaser.Plugin.GamygdalaWrapper();//create the Phaser plugin.
-    //  this.game.plugins.add(gamygdalaPlugin);//add the plugin to the game, as required by Phaser
-    //  this.emotionEngine = gamygdalaPlugin.getGamygdala(); //this gives you a ref to the actual underlying emotion engine, so that you can do what you need to do.
-
-    // This line is needed for the Gamygdala.Expression plugin, if you make your own emotion expressions and effects, this is not needed.
-    // game.load.spritesheet('emotions', 'assets/spritesheets/emotions-small.png', 32, 32);
-    //TODO: Go into Preloader
 
     this.mapKey = mapKey;
 
@@ -118,14 +108,16 @@ export abstract class AbstractScene extends Phaser.Scene {
 
 
     /** GAMYGDALA Player initialization**/
+    this.player.setEmotionalAgent(this.emotionEngine.createAgent(EmotionalEngineAgents.player));
+    this.emotionEngine.createAgent(EmotionalEngineAgents.village);
 
-    this.player.emotionAgent = this.emotionEngine.createAgent('player');
-    this.emotionEngine.createGoalForAgent('player', 'survive', 1);
-    this.emotionEngine.createGoalForAgent('player', 'win', 0.7);
+    this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.player_survive, 1);
+    this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.player_win, 0.8);
+    this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.village_in_danger, -1);
+    this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.player, EmotionalEngineGoals.protect_village, 1);
+    this.emotionEngine.createGoalForAgent(EmotionalEngineAgents.village, EmotionalEngineGoals.village_in_danger, -1);
 
-    // visualization
-    // this.phaserGame.addGamygdalaExpression(this.player, this.player.emotionAgent);
-
+    this.emotionEngine.createRelation(EmotionalEngineAgents.player, EmotionalEngineAgents.village, 0.8);
     /** GAMYGDALA Player initialization**/
 
 
@@ -149,17 +141,20 @@ export abstract class AbstractScene extends Phaser.Scene {
           /** GAMYGDALA Mole initialization **/
           // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
           // because when the player gets hit, we need to tell gamygdala who did it.
-          const agentMoleName = MonsterTypes.evil_mole + j;
+          const agentMoleName = EmotionalEngineAgents.evil_mole + j;
 
-          mole.emotionAgent = this.emotionEngine.createAgent(agentMoleName);
+          mole.setEmotionalAgent(this.emotionEngine.createAgent(agentMoleName));
           j++;
 
           //add a relation between player and monster for fun,
           // mole hates the player
           const relationMole = -1.0;
-          this.emotionEngine.createRelation(agentMoleName, 'player', relationMole);
-          /** GAMYGDALA Mole initialization **/
+          this.emotionEngine.createRelation(agentMoleName, EmotionalEngineAgents.player, relationMole);
+          this.emotionEngine.createRelation(agentMoleName, EmotionalEngineAgents.village, relationMole);
+          this.emotionEngine.createGoalForAgent(agentMoleName, EmotionalEngineGoals.village_in_danger, 1);
+          this.emotionEngine.createGoalForAgent(agentMoleName, EmotionalEngineGoals.protect_village, -1);
 
+          /** GAMYGDALA Mole initialization **/
           return mole;
         case MonsterTypes.protector_treant:
           var treant = new Treant(this, MonsterTypes.protector_treant, monster.x, monster.y, monster.properties[0].value);
@@ -167,15 +162,17 @@ export abstract class AbstractScene extends Phaser.Scene {
           /** GAMYGDALA Treant initialization **/
           // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
           // because when the player gets hit, we need to tell gamygdala who did it.
-          const agentTreantName = MonsterTypes.protector_treant + k;
+          const agentTreantName = EmotionalEngineAgents.protector_treant + k;
 
-          treant.emotionAgent = this.emotionEngine.createAgent(agentTreantName);
+          treant.setEmotionalAgent(this.emotionEngine.createAgent(agentTreantName));
           k++;
 
           //add a relation between player and monster for fun,
           // treant is neutral towards the player
           const relationTreant = 0.0;
-          this.emotionEngine.createRelation(agentTreantName, 'player', relationTreant);
+          this.emotionEngine.createRelation(agentTreantName, EmotionalEngineAgents.player, relationTreant);
+          this.emotionEngine.createRelation(agentTreantName, EmotionalEngineAgents.village, relationTreant);
+          this.emotionEngine.createGoalForAgent(agentTreantName, EmotionalEngineGoals.protect_village, 1);
           /** GAMYGDALA Treant initialization **/
 
           return treant;
@@ -200,24 +197,10 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.initCamera();
 
     this.cursors = this.input.keyboard.createCursorKeys();
-    //
-    // for (let i = 0; i < this.monsters.length; i++){
-    //   // create the Gamygdala agent and store it in the bad_guy object for easy reference later, because when the player gets hit, we need to tell gamygdala who did it.
-    //   this.monsters[i].emotionAgent = AbstractScene.emotionEngine.createAgent(this.monsters[i] instanceof Mole ? "mole_" + i: "treant_" + i);
-    //   // add a relation between player and monster for fun, the first monster hates the player, the second one likes the player, the third hates, etc..
-    //   const relation = this.monsters[i] instanceof Mole ? -1.0 : 0.0;
-    //   AbstractScene.emotionEngine.createRelation(monsters[i].type + i, 'player', relation);
-    //
-    //   // add expression to the bad guy so we see something
-    //   // this.game.plugins.add(new Phaser.Plugin.GamygdalaExpression(game, enemies_group.getAt(i), enemies_group.getAt(i).emotionAgent));
-    //   // We don't need to set goals for these bad guys. In our setup they achieve nothing, just react to what happens with the player: feel pity, gloating, etc...
-    // }
-    //
-    // AbstractScene.emotionEngine.setGain(20);
-    // AbstractScene.emotionEngine.debug=true;
-
     this.sound.play('music', musicConfig);
 
+    this.emotionEngine.appraiseBelief(0.8,'',[EmotionalEngineGoals.village_in_danger],[1]);
+    this.emotionEngine.appraiseBelief(0.2,EmotionalEngineAgents.player,[EmotionalEngineGoals.protect_village],[1]);
   }
 
   private createMapWithLayers() {
@@ -322,13 +305,15 @@ export abstract class AbstractScene extends Phaser.Scene {
 
     for (var i = 0; i < this.monsters.length; i++) {
       if (this.monsters[i].getMonsterType() === type) {
-        this.monsters[i].emotionAgent.getRelation('player').like = -10;
+        this.monsters[i].getEmotionalAgent().getRelation(EmotionalEngineAgents.player).like = -1;
       } else {
-        this.monsters[i].emotionAgent.getRelation('player').like = 10;
+        this.monsters[i].getEmotionalAgent().getRelation(EmotionalEngineAgents.player).like = 1;
       }
+      this.emotionEngine.appraiseBelief(1, this.monsters[i].getEmotionalAgent(),[EmotionalEngineGoals.village_in_danger],
+        this.monsters[i].getMonsterType() === MonsterTypes.evil_mole ? -0.5 : 0.5);
     }
 
-    this.emotionEngine.appraiseBelief(1,'player',['win'],[this.score/2]);
+    this.emotionEngine.appraiseBelief(1,EmotionalEngineAgents.player,['win'],[this.score / (this.monsters.length/2)]);
   }
 
 }
