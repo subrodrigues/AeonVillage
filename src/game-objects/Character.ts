@@ -20,7 +20,6 @@ export abstract class Character extends Phaser.Physics.Arcade.Sprite {
   protected uiScene: GameManager;
 
   protected emotionAgent;
-
   protected strongestEmotion: TUDelft.Gamygdala.Emotion; // To be dealt with and updated with the leaf instanced object
   protected uiEmotionContainer;
   protected uiEmotionName;
@@ -92,7 +91,6 @@ export abstract class Character extends Phaser.Physics.Arcade.Sprite {
       this.uiEmotionBar.setScale(this.strongestEmotion.intensity, 1);
       this.uiEmotionBar.tint = Phaser.Display.Color.HexStringToColor(color).color;
     }
-
   }
 
   /**

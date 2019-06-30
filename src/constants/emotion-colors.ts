@@ -13,7 +13,7 @@ emotionColorMap.set('disappointment', '#1919FF');
 emotionColorMap.set('relief', '#FFFF00');
 emotionColorMap.set('happy-for', '#198C19');
 emotionColorMap.set('resentment', '#FF1919');
-emotionColorMap.set('pity', '#198C19');
+emotionColorMap.set('pity', '#bc13fe');
 emotionColorMap.set('gloating', '#FF1919');
 emotionColorMap.set('gratitude', '#198C19');
 emotionColorMap.set('anger', '#FF1919');
@@ -26,6 +26,7 @@ export default emotionColorMap;
  * Purple #bc13fe
  * - distress
  * - fear
+ * - pity
  * - fear-confirmed
  *
  * Yellow #FFFF00
@@ -36,7 +37,6 @@ export default emotionColorMap;
  * Green #198C19
  * - satisfaction
  * - happy-for
- * - pity
  * - gratitude
  * - gratification
  *

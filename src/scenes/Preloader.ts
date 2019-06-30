@@ -177,7 +177,15 @@ export class Preloader extends Phaser.Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
-    this.load.spritesheet(ASSETS.IMAGES.NPCS, 'assets/spritesheets/wiseman/wise-man-idle-front.png', {
+    this.load.spritesheet(ASSETS.IMAGES.NPC_WISEMAN, 'assets/spritesheets/wiseman/wise-man-idle-front.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet(ASSETS.IMAGES.NPC_MALE_VILLAGER, 'assets/spritesheets/woodworker/woodworker-idle-front.png', {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    this.load.spritesheet(ASSETS.IMAGES.NPC_FEMALE_VILLAGER, 'assets/spritesheets/woodworkerwife/woodworker-wife-idle-side.png', {
       frameWidth: 32,
       frameHeight: 32,
     });

@@ -12,6 +12,8 @@ const DIALOGUE_WINDOW_HEIGHT_FRACTION = 5;
 const DIALOGUE_WINDOW_BOTTOM_MARGIN = 20;
 
 export class HUD extends Phaser.Scene {
+  private DIALOGUE_WINDOW_VIEWING_TIME = 3000;
+
   private hearts: Phaser.GameObjects.Sprite[];
   private gameManager: GameManager;
 
@@ -106,7 +108,7 @@ export class HUD extends Phaser.Scene {
     this.dialogueWindow.setAlpha(1);
 
     this.time.addEvent({
-      delay: 3000,
+      delay: this.DIALOGUE_WINDOW_VIEWING_TIME,
       callback: this.hideDialogueWindow,
       callbackScope: this,
     });
@@ -117,4 +119,5 @@ export class HUD extends Phaser.Scene {
     this.textGameObject.setAlpha(0);
     this.isDialogueWindowVisible = false;
   }
+
 }

@@ -8,6 +8,7 @@ import { MAP_CONTENT_KEYS } from '../constants/assets/map-content-keys';
 import { ASSETS } from '../constants/assets/assets';
 import { MonsterTypes } from '../constants/monster-types';
 import { EmotionalEngineAgents, EmotionalEngineGoals } from '../constants/emotional-engine-variables';
+import { GameUtils } from '../utils/GameUtils';
 // import { PhaserGame } from '../index';
 
 declare var TUDelft: any;
@@ -94,7 +95,7 @@ export abstract class AbstractScene extends Phaser.Scene {
 
     this.monsters.map((monster: Monster) => monster.updateMonster());
     this.player.updatePlayer(keyPressed);
-
+    this.npcs.map((npc: Npc) => npc.update());
   }
 
   protected init(data: InterSceneData) {
@@ -125,13 +126,23 @@ export abstract class AbstractScene extends Phaser.Scene {
 
     const npcsMapObjects = this.map.objects.find(o => o.name === MAP_CONTENT_KEYS.objects.NPCS);
     const npcs: any = npcsMapObjects ? npcsMapObjects.objects : [];
+    let i = 0;
     this.npcs = npcs.map(npc => {
-      return new Npc(this, npc.x, npc.y, npc.properties[0].value);
+      // TODO: do a proper properties parse. Looking into key names.
+      let newNpc = new Npc(this, GameUtils.getNpcSpriteByType(npc.type), npc.x, npc.y, npc.properties[0].value, npc.properties[1].value);
+      const agentNpcName = EmotionalEngineAgents.npc + i;
+      newNpc.setEmotionalAgent(this.emotionEngine.createAgent(agentNpcName));
+      i++;
+
+      this.emotionEngine.createRelation(agentNpcName, EmotionalEngineAgents.village, 1.0);
+      this.emotionEngine.createRelation(agentNpcName, EmotionalEngineAgents.player, 0.0);
+      this.emotionEngine.createGoalForAgent(agentNpcName, EmotionalEngineGoals.village_in_danger, -1);
+
+      return newNpc;
     });
 
     const monstersMapObjects = this.map.objects.find(o => o.name === MAP_CONTENT_KEYS.objects.MONSTERS);
     const monsters: any = monstersMapObjects ? monstersMapObjects.objects : [];
-
     let j = 0;
     let k = 0;
     this.monsters = monsters.map((monster: any): Monster => {
