@@ -1,12 +1,10 @@
 import { Orientation } from '../geometry/orientation';
 import { Character } from './Character';
-import { ASSETS } from '../constants/assets';
+import { ASSETS } from '../constants/assets/assets';
 
 export abstract class Monster extends Character {
   private static WANDER_DELAY = () => (1000 + 1000 * Math.random());
   private static WANDER_LENGTH = () => (1000 + 5000 * Math.random());
-
-  public emotionAgent;
 
   protected abstract WALK_ANIMATION;
   protected abstract MONSTER_IDLE_DOWN;
@@ -23,9 +21,14 @@ export abstract class Monster extends Character {
   private isPacifier: boolean = false; // To be used by originaly pacific creatures
 
   private fixedDirection = {x: 1, y: 1};
+  private monsterType: string;
 
-  protected constructor(scene, x: number = 400, y: number = 400, moveBehavior: integer = 0, sprite: string) {
+  protected abstract animateAttack(): void;
+
+  protected constructor(scene, type: string, x: number = 400, y: number = 400, moveBehavior: integer = 0, sprite: string) {
     super(scene, x, y, sprite);
+    this.monsterType = type;
+
     this.moveBehavior = moveBehavior;
 
     this.body.bounce.x = 0.01;
@@ -36,6 +39,9 @@ export abstract class Monster extends Character {
     if (!this.active) {
       return;
     }
+
+    this.renderStrongestEmotion();
+
     this.handleChase();
   }
 
@@ -63,9 +69,9 @@ export abstract class Monster extends Character {
     }
   }
 
-  protected abstract animateAttack(): void;
+  protected die() {
+    this.scene.monsterKilledByPlayer(this.monsterType);
 
-  private die = () => {
     const deathAnim = this.scene.add
       .sprite(
         this.x,
@@ -79,7 +85,8 @@ export abstract class Monster extends Character {
   private shouldChase = () => {
 
     // While a pacifier monster is not startled, it will not attack
-    if (this.isPacifier && !this.isStartled) {
+    if ((this.isPacifier && !this.isStartled) ||
+      (this.emotionAgent.currentRelations.length > 0 && this.emotionAgent.getRelation('player').like > 0.2)) { // If the monster likes the player, we will not attack
       return;
     }
 
@@ -244,4 +251,14 @@ export abstract class Monster extends Character {
   public setIsPacifier(condition: boolean ){
     this.isPacifier = condition;
   }
+
+  // @ts-ignore
+  public getMonsterType(){
+    return this.monsterType;
+  }
+
+  public setMonsterType(type: string) {
+    this.monsterType = type;
+  }
+
 }

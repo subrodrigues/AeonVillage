@@ -1,6 +1,6 @@
 import { AbstractScene } from './AbstractScene';
-import { SCENES } from '../constants/scenes';
-import { MAPS } from '../constants/maps';
+import { SCENES } from '../constants/service/scenes';
+import { MAPS } from '../constants/assets/maps';
 
 export class FirstLevel extends AbstractScene {
   constructor() {

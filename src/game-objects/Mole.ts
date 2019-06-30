@@ -1,5 +1,5 @@
 import { Monster } from './Monster';
-import { ASSETS } from '../constants/assets';
+import { ASSETS } from '../constants/assets/assets';
 
 export class Mole extends Monster {
 
@@ -13,8 +13,8 @@ export class Mole extends Monster {
 
   protected MONSTER_SPEED = 15;
 
-  constructor(scene, x: number = 400, y: number = 400, moveBehavior: integer = 0) {
-    super(scene, x, y, moveBehavior, ASSETS.IMAGES.MOLE_IDLE_DOWN);
+  constructor(scene, type: string, x: number = 400, y: number = 400, moveBehavior: integer = 0) {
+    super(scene, type, x, y, moveBehavior, ASSETS.IMAGES.MOLE_IDLE_DOWN);
 
     this.hp = 3;
     this.setDepth(5);

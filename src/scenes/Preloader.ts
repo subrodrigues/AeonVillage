@@ -1,6 +1,6 @@
-import { MAPS } from '../constants/maps';
-import { ASSETS } from '../constants/assets';
-import { SCENES } from '../constants/scenes';
+import { MAPS } from '../constants/assets/maps';
+import { ASSETS } from '../constants/assets/assets';
+import { SCENES } from '../constants/service/scenes';
 
 export class Preloader extends Phaser.Scene {
 

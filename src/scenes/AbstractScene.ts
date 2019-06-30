@@ -4,10 +4,12 @@ import { Treant } from '../game-objects/Treant';
 import { Monster } from '../game-objects/Monster';
 import { Mole } from '../game-objects/Mole';
 import { Npc } from '../game-objects/Npc';
-import { MAP_CONTENT_KEYS } from '../constants/map-content-keys';
-import { ASSETS } from '../constants/assets';
-import { MONSTERS } from '../constants/monsters';
-// declare var TUDelft: any;
+import { MAP_CONTENT_KEYS } from '../constants/assets/map-content-keys';
+import { ASSETS } from '../constants/assets/assets';
+import { MonsterTypes } from '../constants/monster-types';
+// import { PhaserGame } from '../index';
+
+declare var TUDelft: any;
 
 const PLAYER_INITIAL_POSITION = {
   x: 368,
@@ -21,7 +23,7 @@ const musicConfig = {
   detune: 0,
   seek: 0,
   loop: true,
-  delay: 0
+  delay: 0,
 };
 
 interface InterSceneData {
@@ -51,10 +53,30 @@ export abstract class AbstractScene extends Phaser.Scene {
 
   public music: Phaser.Sound.BaseSound;
 
+  // private phaserGame: PhaserGame;
+  private emotionEngine: TUDelft.Gamygdala;
+  private score = 0;
+
   constructor(key: string, mapKey: string) {
     super(key);
 
-    // AbstractScene.emotionEngine = new TUDelft.Gamygdala();
+    /** Emotional Engine initialization **/
+    // this.phaserGame = PhaserGame.instance;
+    this.emotionEngine = new TUDelft.Gamygdala(); // this simply creates an emotion engine without plugin support.s
+    this.emotionEngine.debug = true;
+    this.emotionEngine.setGain(20);
+
+    /** Emotional Engine initialization **/
+
+
+    //
+    //  gamygdalaPlugin = new Phaser.Plugin.GamygdalaWrapper();//create the Phaser plugin.
+    //  this.game.plugins.add(gamygdalaPlugin);//add the plugin to the game, as required by Phaser
+    //  this.emotionEngine = gamygdalaPlugin.getGamygdala(); //this gives you a ref to the actual underlying emotion engine, so that you can do what you need to do.
+
+    // This line is needed for the Gamygdala.Expression plugin, if you make your own emotion expressions and effects, this is not needed.
+    // game.load.spritesheet('emotions', 'assets/spritesheets/emotions-small.png', 32, 32);
+    //TODO: Go into Preloader
 
     this.mapKey = mapKey;
 
@@ -94,6 +116,19 @@ export abstract class AbstractScene extends Phaser.Scene {
     const playerInitialPosition = this.getPlayerInitialPosition(levelChangerObjectLayer, data);
     this.player = new Player(this, playerInitialPosition.x, playerInitialPosition.y);
 
+
+    /** GAMYGDALA Player initialization**/
+
+    this.player.emotionAgent = this.emotionEngine.createAgent('player');
+    this.emotionEngine.createGoalForAgent('player', 'survive', 1);
+    this.emotionEngine.createGoalForAgent('player', 'win', 0.7);
+
+    // visualization
+    // this.phaserGame.addGamygdalaExpression(this.player, this.player.emotionAgent);
+
+    /** GAMYGDALA Player initialization**/
+
+
     const npcsMapObjects = this.map.objects.find(o => o.name === MAP_CONTENT_KEYS.objects.NPCS);
     const npcs: any = npcsMapObjects ? npcsMapObjects.objects : [];
     this.npcs = npcs.map(npc => {
@@ -103,15 +138,52 @@ export abstract class AbstractScene extends Phaser.Scene {
     const monstersMapObjects = this.map.objects.find(o => o.name === MAP_CONTENT_KEYS.objects.MONSTERS);
     const monsters: any = monstersMapObjects ? monstersMapObjects.objects : [];
 
+    let j = 0;
+    let k = 0;
     this.monsters = monsters.map((monster: any): Monster => {
       switch (monster.type) {
-        case MONSTERS.evil_mole:
-          return new Mole(this, monster.x, monster.y, monster.properties[0].value);
-        case MONSTERS.protector_treant:
-          return new Treant(this, monster.x, monster.y, monster.properties[0].value);
+
+        case MonsterTypes.evil_mole:
+          var mole = new Mole(this, MonsterTypes.evil_mole, monster.x, monster.y, monster.properties[0].value);
+
+          /** GAMYGDALA Mole initialization **/
+          // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
+          // because when the player gets hit, we need to tell gamygdala who did it.
+          const agentMoleName = MonsterTypes.evil_mole + j;
+
+          mole.emotionAgent = this.emotionEngine.createAgent(agentMoleName);
+          j++;
+
+          //add a relation between player and monster for fun,
+          // mole hates the player
+          const relationMole = -1.0;
+          this.emotionEngine.createRelation(agentMoleName, 'player', relationMole);
+          /** GAMYGDALA Mole initialization **/
+
+          return mole;
+        case MonsterTypes.protector_treant:
+          var treant = new Treant(this, MonsterTypes.protector_treant, monster.x, monster.y, monster.properties[0].value);
+
+          /** GAMYGDALA Treant initialization **/
+          // create the Gamygdala agent and store it in the bad_guy object for easy reference later,
+          // because when the player gets hit, we need to tell gamygdala who did it.
+          const agentTreantName = MonsterTypes.protector_treant + k;
+
+          treant.emotionAgent = this.emotionEngine.createAgent(agentTreantName);
+          k++;
+
+          //add a relation between player and monster for fun,
+          // treant is neutral towards the player
+          const relationTreant = 0.0;
+          this.emotionEngine.createRelation(agentTreantName, 'player', relationTreant);
+          /** GAMYGDALA Treant initialization **/
+
+          return treant;
+
         default:
       }
     });
+
 
     if (levelChangerObjectLayer) {
       levelChangerObjectLayer.objects.map((o: any) => {
@@ -239,6 +311,24 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     this.cameras.main.setZoom(4);
+  }
+
+
+  /**
+   * GAMYGDALA METHODS
+   **/
+  public monsterKilledByPlayer(type: string) {
+    this.score += 1;
+
+    for (var i = 0; i < this.monsters.length; i++) {
+      if (this.monsters[i].getMonsterType() === type) {
+        this.monsters[i].emotionAgent.getRelation('player').like = -10;
+      } else {
+        this.monsters[i].emotionAgent.getRelation('player').like = 10;
+      }
+    }
+
+    this.emotionEngine.appraiseBelief(1,'player',['win'],[this.score/2]);
   }
 
 }

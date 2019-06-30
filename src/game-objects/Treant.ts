@@ -1,5 +1,5 @@
 import { Monster } from './Monster';
-import { ASSETS } from '../constants/assets';
+import { ASSETS } from '../constants/assets/assets';
 
 const DESTROY_SPRITE_ATTACK_DELAY = 200;
 
@@ -14,8 +14,8 @@ export class Treant extends Monster {
 
   protected MONSTER_SPEED = 14;
 
-  constructor(scene, x: number = 400, y: number = 400, moveBehavior: integer = 0) {
-    super(scene, x, y, moveBehavior, ASSETS.IMAGES.TREANT_IDLE_DOWN);
+  constructor(scene, type: string, x: number = 400, y: number = 400, moveBehavior: integer = 0) {
+    super(scene, type, x, y, moveBehavior, ASSETS.IMAGES.TREANT_IDLE_DOWN);
 
     this.hp = 3;
     this.setDepth(5);
@@ -38,4 +38,5 @@ export class Treant extends Monster {
       callbackScope: this,
     });
   }
+
 }

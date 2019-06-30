@@ -1,6 +1,6 @@
-import { REGISTRY_KEYS } from '../constants/registry';
-import { SCENES } from '../constants/scenes';
-import { EVENTS } from '../constants/events';
+import { REGISTRY_KEYS } from '../constants/service/registry';
+import { SCENES } from '../constants/service/scenes';
+import { EVENTS } from '../constants/service/events';
 
 export class GameManager extends Phaser.Scene {
   constructor() {

@@ -1,6 +1,6 @@
 import { Orientation } from '../geometry/orientation';
 import { Player } from './Player';
-import { ASSETS } from '../constants/assets';
+import { ASSETS } from '../constants/assets/assets';
 
 const ARROW_SPEED = 150;
 

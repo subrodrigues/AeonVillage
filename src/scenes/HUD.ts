@@ -1,7 +1,7 @@
 import { Player } from '../game-objects/Player';
-import { ASSETS } from '../constants/assets';
-import { SCENES } from '../constants/scenes';
-import { EVENTS } from '../constants/events';
+import { ASSETS } from '../constants/assets/assets';
+import { SCENES } from '../constants/service/scenes';
+import { EVENTS } from '../constants/service/events';
 import { GameManager } from './GameManager';
 
 const DISTANCE_BETWEEN_HEARTS = 36;

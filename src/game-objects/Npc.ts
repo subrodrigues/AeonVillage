@@ -1,7 +1,7 @@
 import { AbstractScene } from '../scenes/AbstractScene';
-import { ASSETS } from '../constants/assets';
+import { ASSETS } from '../constants/assets/assets';
 import { GameManager } from '../scenes/GameManager';
-import { SCENES } from '../constants/scenes';
+import { SCENES } from '../constants/service/scenes';
 
 export class Npc extends Phaser.Physics.Arcade.Sprite {
   public scene: AbstractScene;

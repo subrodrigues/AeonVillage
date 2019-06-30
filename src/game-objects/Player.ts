@@ -3,14 +3,13 @@ import { Character } from './Character';
 import { Arrow } from './Arrow';
 import { Monster } from './Monster';
 import { AbstractScene } from '../scenes/AbstractScene';
-import { ASSETS } from '../constants/assets';
+import { ASSETS } from '../constants/assets/assets';
 
 const HIT_DELAY = 2000;
 const PLAYER_SPEED = 16;
 
 export class Player extends Character {
   public static MAX_HP = 3;
-  // public emotionAgent;
 
   private static MOVE_ANIMATION = {
     down: { flip: false, anim: ASSETS.ANIMATIONS.PLAYER_MOVE_DOWN },
@@ -69,17 +68,6 @@ export class Player extends Character {
     this.isShotKeyPressed = false;
 
     this.on('animationcomplete', this.onAnimationComplete, this);
-
-
-
-
-
-    // GAMYGDALA
-    //
-    //
-    // this.emotionAgent = AbstractScene.emotionEngine.createAgent('player');
-    // AbstractScene.emotionEngine.createGoalForAgent('player','survive', 1);
-    // AbstractScene.emotionEngine.createGoalForAgent('player','win', 0.7);
   }
 
   private onAnimationComplete(animation, frame) {
@@ -103,6 +91,9 @@ export class Player extends Character {
     if (!this.active) {
       return;
     }
+
+    this.renderStrongestEmotion();
+
     this.setVelocity(0);
     this.handleMovement(keyPressed);
 
@@ -259,4 +250,5 @@ export class Player extends Character {
       m.loseHp(a);
     });
   }
+
 }
