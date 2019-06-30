@@ -1,6 +1,10 @@
 import { Monster } from './Monster';
 import { ASSETS } from '../constants/assets/assets';
 
+/**
+ * Class that represents a GameObject. It extends the abstract class Monster.
+ * Using a prototype approach this class encompasses all the functions needed to rendering and physics of this object.
+ */
 export class Mole extends Monster {
 
   protected WALK_ANIMATION = {

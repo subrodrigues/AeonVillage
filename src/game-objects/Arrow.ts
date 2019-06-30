@@ -4,6 +4,10 @@ import { ASSETS } from '../constants/assets/assets';
 
 const ARROW_SPEED = 150;
 
+/**
+ * Class that represents a game object.
+ * Using a prototype approach this class encompasses all the functions needed to rendering and physics of this object.
+ */
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
   public scene: Phaser.Scene;
 

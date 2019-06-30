@@ -11,7 +11,10 @@ type CharacterAnimation = {
     anim: string;
   };
 };
-
+/**
+ * Class that represents an abstract Base GameObject
+ * Using a prototype approach this class encompasses all the functions needed for rendering and physics of the children that will use it's functionality.
+ */
 export abstract class Character extends Phaser.Physics.Arcade.Sprite {
   private EMOTION_NAME_VERTICAL_OFFSET = 23;
   private EMOTION_CONTAINER_VERTICAL_OFFSET = 16;

@@ -32,7 +32,7 @@ export class PhaserGame extends Phaser.Game {
         default: 'arcade',
         gravity: { y: 0 }, // Top down game, so no gravity
         arcade: {
-          debug: true,
+          debug: false,
         },
       },
       scene: [Preloader, TitleScreen, FirstLevel, SecondLevel, GameManager, HUD, GameOverScreen],

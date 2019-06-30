@@ -15,8 +15,8 @@ import { SCENES } from '../constants/service/scenes';
 declare var TUDelft: any;
 
 const PLAYER_INITIAL_POSITION = {
-  x: 368,
-  y: 416,
+  x: 400,
+  y: 270,
 };
 
 const musicConfig = {
@@ -250,12 +250,14 @@ export abstract class AbstractScene extends Phaser.Scene {
 
     this.layers.world_objects.setDepth(20);
 
-    const debugGraphics = this.add.graphics().setAlpha(0.75);
-    this.layers.collisions.renderDebug(debugGraphics, {
-      tileColor: null, // Color of non-colliding tiles
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
-    });
+    /** DEBUG COLLIDERS **/
+    // const debugGraphics = this.add.graphics().setAlpha(0.75);
+    // this.layers.collisions.renderDebug(debugGraphics, {
+    //   tileColor: null, // Color of non-colliding tiles
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+    //   faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
+    // });
+    /** DEBUG COLLIDERS **/
 
   }
 
