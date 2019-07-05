@@ -63,7 +63,12 @@ export class Npc extends Phaser.Physics.Arcade.Sprite {
   }
 
   public talk = () => {
-    this.uiScene.showDialogueMessage(this.standardMessage);
+    var color = GameUtils.getEmotionColor(this.strongestEmotion.name);
+
+    if(color === '#198C19') // green
+      this.uiScene.showDialogueMessage(this.joyText);
+    else
+      this.uiScene.showDialogueMessage(this.standardMessage);
   }
 
   /**

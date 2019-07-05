@@ -54,7 +54,7 @@ export class HUD extends Phaser.Scene {
 
     // Text Object
     this.textGameObject = this.add.text(0, 0, "", { align: 'left', fontSize: '28px', color: '#000000', stroke : '#212121', strokeThickness: 2});
-    this.textGameObject.setWordWrapWidth(dialogueWindowWidth - 18);
+    this.textGameObject.setWordWrapWidth(dialogueWindowWidth - 22);
 
     this.textGameObject.setPosition(
       DIALOGUE_WINDOW_WIDTH_MARGIN,
