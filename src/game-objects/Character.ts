@@ -11,6 +11,7 @@ type CharacterAnimation = {
     anim: string;
   };
 };
+
 /**
  * Class that represents an abstract Base GameObject
  * Using a prototype approach this class encompasses all the functions needed for rendering and physics of the children that will use it's functionality.

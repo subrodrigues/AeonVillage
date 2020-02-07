@@ -1,4 +1,4 @@
-import { MonsterTypes } from './monster-types';
+import { MonsterTypes } from '../../constants/monster-types';
 
 export const EmotionalEngineAgents = {
   player: 'player',

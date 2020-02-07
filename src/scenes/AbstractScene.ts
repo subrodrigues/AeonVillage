@@ -7,9 +7,10 @@ import { Npc } from '../game-objects/Npc';
 import { MAP_CONTENT_KEYS } from '../constants/assets/map-content-keys';
 import { ASSETS } from '../constants/assets/assets';
 import { MonsterTypes } from '../constants/monster-types';
-import { EmotionalEngineAgents, EmotionalEngineGoals } from '../constants/emotional-engine-variables';
+import { EmotionalEngineAgents, EmotionalEngineGoals } from '../gamygdala/constants/emotional-engine-variables';
 import { GameUtils } from '../utils/GameUtils';
 import { SCENES } from '../constants/service/scenes';
+import { EmotionalEngineHelper } from '../gamygdala/EmotionalEngineHelper';
 // import { PhaserGame } from '../index';
 
 declare var TUDelft: any;
@@ -57,7 +58,9 @@ export abstract class AbstractScene extends Phaser.Scene {
 
   public music: Phaser.Sound.BaseSound;
 
-  private emotionEngine: TUDelft.Gamygdala;
+  // private emotionEngine: TUDelft.Gamygdala;
+  private emotionalEngineHelper: EmotionalEngineHelper;
+
   private score = 0;
   private totalEvilMoles = 0;
   private totalProtTreant = 0;
@@ -66,12 +69,13 @@ export abstract class AbstractScene extends Phaser.Scene {
   constructor(key: string, mapKey: string) {
     super(key);
 
-    /** Emotional Engine initialization **/
-    // this.phaserGame = PhaserGame.instance;
-    this.emotionEngine = new TUDelft.Gamygdala(); // this simply creates an emotion engine without plugin supports
-    this.emotionEngine.debug = true;
-    this.emotionEngine.setGain(20);
-    /** Emotional Engine initialization **/
+    this.emotionalEngineHelper = new EmotionalEngineHelper();
+    // /** Emotional Engine initialization **/
+    // // this.phaserGame = PhaserGame.instance;
+    // this.emotionEngine = new TUDelft.Gamygdala(); // this simply creates an emotion engine without plugin supports
+    // this.emotionEngine.debug = true;
+    // this.emotionEngine.setGain(20);
+    // /** Emotional Engine initialization **/
 
     this.mapKey = mapKey;
 
@@ -86,9 +90,11 @@ export abstract class AbstractScene extends Phaser.Scene {
 
   public update() {
     if (Phaser.Input.Keyboard.JustDown(this.debugKey)) {
-      this.emotionEngine.debug = !this.emotionEngine.debug;
-      console.log(this.emotionEngine.debug ? '[DEBUG ON] - Emotional log will be shown on console' :
-        '[DEBUG OFF] - No emotional log on console');
+      // this.emotionEngine.debug = !this.emotionEngine.debug;
+      // console.log(this.emotionEngine.debug ? '[DEBUG ON] - Emotional log will be shown on console' :
+      //   '[DEBUG OFF] - No emotional log on console');
+
+      this.emotionalEngineHelper.toggleDebug();
     }
 
     const keyPressed = {

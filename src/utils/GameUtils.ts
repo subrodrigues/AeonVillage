@@ -1,4 +1,4 @@
-import emotionColorMap from '../constants/emotion-colors';
+import emotionColorMap from '../gamygdala/constants/emotion-colors';
 import { NpcTypes } from '../constants/npc-types';
 import { ASSETS } from '../constants/assets/assets';
 
